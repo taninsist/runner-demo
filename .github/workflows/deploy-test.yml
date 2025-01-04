@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest  # 使用 GitHub 托管的虚拟机运行工作流
 
     steps:
-      # 第一步：检出代码
+      # 第一步：检出代码（供 GitHub Actions 执行环境使用，非部署服务器）
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -20,14 +20,28 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      # 第三步：部署应用到远程服务器
+      # 第三步：部署到远程服务器
       - name: Deploy to server
         run: |
           ssh -o StrictHostKeyChecking=no root@8.130.137.5 "
-          cd /usr/src/app &&
-          git reset --hard &&
-          git pull origin test &&
-          docker-compose down &&
-          docker-compose pull &&
+          # 项目目录路径
+          PROJECT_DIR=/usr/src/app/runner-demo
+
+          # 检查项目目录是否存在
+          if [ ! -d \"\$PROJECT_DIR\" ]; then
+            echo '项目目录不存在，正在克隆仓库...'
+            git clone --branch test https://github.com/taninsist/runner-demo.git \$PROJECT_DIR
+          else
+            echo '项目目录已存在，切换到 test 分支并拉取最新代码...'
+            cd \$PROJECT_DIR
+            git fetch origin
+            git checkout test
+            git reset --hard origin/test
+          fi
+
+          # 切换到项目目录并更新代码
+          cd \$PROJECT_DIR
+          docker-compose down
+          docker-compose pull
           docker-compose up -d
           "
