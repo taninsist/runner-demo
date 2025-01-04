@@ -34,7 +34,7 @@ jobs:
           else
             echo '项目目录已存在，切换到 test 分支并拉取最新代码...'
             cd \$PROJECT_DIR
-            git fetch origin
+            git pull --rebase
             git checkout test
             git reset --hard origin/test
           fi
