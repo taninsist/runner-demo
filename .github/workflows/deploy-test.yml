@@ -24,7 +24,9 @@ jobs:
       - name: Deploy to server
         run: |
           ssh -o StrictHostKeyChecking=no root@8.130.137.5 "
-          cd /path/to/your/project &&
+          cd /usr/src/app &&
+          git reset --hard &&
+          git pull origin test &&
           docker-compose down &&
           docker-compose pull &&
           docker-compose up -d
