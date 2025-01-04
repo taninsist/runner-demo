@@ -5,11 +5,22 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      # 添加构建缓存
+      cache_from:
+        - node:20
     container_name: nestjs-app
     ports:
       - "3000:3000"
     networks:
       - app-network
+    # 添加重启策略
+    restart: unless-stopped
+    # 添加健康检查
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   nginx:
     image: nginx:alpine
@@ -20,6 +31,9 @@ services:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
     networks:
       - app-network
+    restart: unless-stopped
+    depends_on:
+      - nestjs
 
 networks:
   app-network:
