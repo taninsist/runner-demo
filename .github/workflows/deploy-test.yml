@@ -41,7 +41,7 @@ jobs:
 
           # 切换到项目目录并更新代码
           cd \$PROJECT_DIR
-          docker-compose down
-          docker-compose pull
-          docker-compose up -d
+          docker compose down
+          docker compose pull
+          docker compose up -d
           "
