@@ -4,7 +4,7 @@ WORKDIR /usr/src/app/runner-demo
 
 # 使用 --omit=dev 替代 --production
 COPY package*.json ./
-RUN npm install --omit=dev
+RUN npm install --omit=dev --registry=https://registry.npmmirror.com
 
 COPY . .
 
