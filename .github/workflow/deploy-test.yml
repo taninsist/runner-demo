@@ -1,0 +1,31 @@
+name: Deploy to Test Environment
+
+on:
+  push:
+    branches:
+      - test  # 当推送到 test 分支时触发
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest  # 使用 GitHub 托管的虚拟机运行工作流
+
+    steps:
+      # 第一步：检出代码
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 第二步：设置 SSH 代理
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      # 第三步：部署应用到远程服务器
+      - name: Deploy to server
+        run: |
+          ssh -o StrictHostKeyChecking=no root@8.130.137.5 "
+          cd /path/to/your/project &&
+          docker-compose down &&
+          docker-compose pull &&
+          docker-compose up -d
+          "
