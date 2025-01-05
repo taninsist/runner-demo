@@ -3,11 +3,11 @@ name: Deploy to Test Environment
 on:
   push:
     branches:
-      - test  # 当推送到 test 分支时触发
+      - test # 当推送到 test 分支时触发
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest  # 使用 GitHub 托管的虚拟机运行工作流
+    runs-on: ubuntu-latest # 使用 GitHub 托管的虚拟机运行工作流
 
     steps:
       # 第一步：检出代码（供 GitHub Actions 执行环境使用，非部署服务器）
@@ -38,6 +38,10 @@ jobs:
             git checkout test
             git reset --hard origin/test
           fi
+
+          # 创建或更新 .env.test 文件
+          echo 'BASE_API=${{ vars.BASE_API }}' > .env.test
+          echo 'PORT=${{ vars.PORT }}' >> .env.test
 
           # 切换到项目目录并更新代码
           cd \$PROJECT_DIR
