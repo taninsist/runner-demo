@@ -42,6 +42,8 @@ jobs:
           # 创建或更新 .env.test 文件
           echo 'BASE_API=${{ vars.BASE_API }}' > .env.test
           echo 'PORT=${{ vars.PORT }}' >> .env.test
+          echo 'NODE_ENV=test' >> .env.test
+          
 
           # 切换到项目目录并更新代码
           cd \$PROJECT_DIR
