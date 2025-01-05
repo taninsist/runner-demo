@@ -7,6 +7,7 @@ on:
 
 jobs:
   deploy:
+    environment: test
     runs-on: ubuntu-latest # 使用 GitHub 托管的虚拟机运行工作流
 
     steps:
@@ -40,8 +41,8 @@ jobs:
           fi
 
           # 创建或更新 .env.test 文件
-          echo 'BASE_API=${{ env.BASE_API }}' > .env.test
-          echo 'PORT=${{ env.PORT }}' >> .env.test
+          echo 'BASE_API=${{ vars.BASE_API }}' > .env.test
+          echo 'PORT=${{ vars.PORT }}' >> .env.test
           echo 'NODE_ENV=test' >> .env.test
           
 
