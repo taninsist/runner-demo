@@ -2,7 +2,6 @@ FROM node:20
 
 WORKDIR /usr/src/app/runner-demo
 
-# 使用 --omit=dev 替代 --production
 COPY package*.json ./
 RUN npm i -g @nestjs/cli --registry=https://registry.npmmirror.com
 RUN npm install --registry=https://registry.npmmirror.com
@@ -13,8 +12,5 @@ RUN npm run build
 
 EXPOSE 3000
 
-# 删除以下行，因为它会在构建镜像时启动应用程序
-# RUN npm run start:test
-
-# 启动应用程序
-CMD ["npm", "run", "start:test"]
+# 使用 node 命令直接运行编译后的文件，而不是通过 npm scripts
+CMD ["node", "dist/main"]
