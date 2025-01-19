@@ -19,6 +19,9 @@ services:
       timeout: 10s
       retries: 3
     command: ["npm", "run", "start:test"]
+    init: true
+    stop_signal: SIGTERM
+    stop_grace_period: 30s
 
   nginx:
     image: nginx:alpine

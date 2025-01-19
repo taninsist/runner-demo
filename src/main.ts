@@ -27,6 +27,17 @@ async function bootstrap() {
 
   app.setGlobalPrefix(BASE_API || 'api');
 
+  // 添加进程信号处理
+  process.on('SIGTERM', async () => {
+    await app.close();
+    process.exit(0);
+  });
+
+  process.on('SIGINT', async () => {
+    await app.close();
+    process.exit(0);
+  });
+
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
