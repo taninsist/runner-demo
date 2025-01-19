@@ -13,5 +13,8 @@ RUN npm run build
 
 EXPOSE 3000
 
-RUN npm run start:test
-# CMD ["node", "dist/main.js"]
+# 删除以下行，因为它会在构建镜像时启动应用程序
+# RUN npm run start:test
+
+# 启动应用程序
+CMD ["npm", "run", "start:test"]

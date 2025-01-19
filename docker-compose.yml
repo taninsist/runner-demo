@@ -8,8 +8,6 @@ services:
       cache_from:
         - node:20
     container_name: nestjs-app
-    env_file:
-      - .env.test
     ports:
       - "3000:3000"
     networks:
@@ -20,6 +18,7 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
+    command: ["npm", "run", "start:test"]
 
   nginx:
     image: nginx:alpine
